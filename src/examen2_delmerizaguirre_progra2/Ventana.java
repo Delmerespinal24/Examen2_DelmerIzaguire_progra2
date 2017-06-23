@@ -5,6 +5,11 @@
  */
 package examen2_delmerizaguirre_progra2;
 
+import java.util.ArrayList;
+import javax.swing.DefaultComboBoxModel;
+import javax.swing.tree.DefaultMutableTreeNode;
+import javax.swing.tree.DefaultTreeModel;
+
 /**
  *
  * @author Owner
@@ -16,6 +21,34 @@ public class Ventana extends javax.swing.JFrame {
      */
     public Ventana() {
         initComponents();
+    }
+
+    private ArrayList<Soldado> soldados = new ArrayList();
+
+    public void Cargar() {
+        DefaultTreeModel m = (DefaultTreeModel) jt_arbol.getModel();
+        DefaultMutableTreeNode rusos = new DefaultMutableTreeNode("Soldados Rusos");
+        DefaultMutableTreeNode alemanes = new DefaultMutableTreeNode("Soldados Alemanes");
+        DefaultMutableTreeNode alumno = new DefaultMutableTreeNode("Alumnos de programacion II");
+        for (Soldado sld : soldados) {
+            if (sld instanceof Ruso) {
+                DefaultMutableTreeNode soldado = new DefaultMutableTreeNode(sld);
+                
+                rusos.add(soldado);
+
+            } else if (sld instanceof Aleman) {
+                DefaultMutableTreeNode soldado = new DefaultMutableTreeNode(sld);
+                alemanes.add(soldado);
+
+            } else {
+                DefaultMutableTreeNode soldado = new DefaultMutableTreeNode(sld);
+                alumno.add(soldado);
+
+            }
+
+        }
+        m.reload();
+
     }
 
     /**
@@ -33,13 +66,23 @@ public class Ventana extends javax.swing.JFrame {
         eliminar = new javax.swing.JMenuItem();
         jd_agregar = new javax.swing.JDialog();
         jLabel2 = new javax.swing.JLabel();
-        jComboBox1 = new javax.swing.JComboBox<>();
-        jLabel3 = new javax.swing.JLabel();
+        cb_soldado = new javax.swing.JComboBox<>();
+        lb_nombre = new javax.swing.JLabel();
+        lb_id = new javax.swing.JLabel();
+        lb_rango = new javax.swing.JLabel();
+        lb_arma = new javax.swing.JLabel();
+        tf_nombre = new javax.swing.JTextField();
+        tf_id = new javax.swing.JTextField();
+        tf_rango = new javax.swing.JTextField();
+        jButton1 = new javax.swing.JButton();
+        cb_arma = new javax.swing.JComboBox<>();
+        lb_edad = new javax.swing.JLabel();
+        tf_edad = new javax.swing.JTextField();
         jScrollPane1 = new javax.swing.JScrollPane();
-        jTree1 = new javax.swing.JTree();
+        jt_arbol = new javax.swing.JTree();
         jLabel1 = new javax.swing.JLabel();
 
-        agregar.setText("jMenuItem1");
+        agregar.setText("Agregar soldado");
         agregar.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 agregarActionPerformed(evt);
@@ -47,51 +90,76 @@ public class Ventana extends javax.swing.JFrame {
         });
         menu_popup.add(agregar);
 
-        modificar.setText("jMenuItem1");
+        modificar.setText("Modificar soldado");
         menu_popup.add(modificar);
 
-        eliminar.setText("jMenuItem2");
+        eliminar.setText("Eliminar soldado");
+        eliminar.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                eliminarActionPerformed(evt);
+            }
+        });
         menu_popup.add(eliminar);
+
+        jd_agregar.getContentPane().setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
 
         jLabel2.setFont(new java.awt.Font("Tahoma", 0, 14)); // NOI18N
         jLabel2.setText("Equipo");
+        jd_agregar.getContentPane().add(jLabel2, new org.netbeans.lib.awtextra.AbsoluteConstraints(88, 91, -1, -1));
 
-        jComboBox1.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Alumno de progra 2", "Aleman", "Ruso" }));
+        cb_soldado.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Ruso", "Aleman", "Alumno de progra 2" }));
+        cb_soldado.addItemListener(new java.awt.event.ItemListener() {
+            public void itemStateChanged(java.awt.event.ItemEvent evt) {
+                cb_soldadoItemStateChanged(evt);
+            }
+        });
+        jd_agregar.getContentPane().add(cb_soldado, new org.netbeans.lib.awtextra.AbsoluteConstraints(210, 91, 179, -1));
 
-        jLabel3.setFont(new java.awt.Font("Tahoma", 0, 14)); // NOI18N
-        jLabel3.setText("Equipo");
+        lb_nombre.setFont(new java.awt.Font("Tahoma", 0, 14)); // NOI18N
+        lb_nombre.setText("Nombre");
+        jd_agregar.getContentPane().add(lb_nombre, new org.netbeans.lib.awtextra.AbsoluteConstraints(88, 160, -1, -1));
 
-        javax.swing.GroupLayout jd_agregarLayout = new javax.swing.GroupLayout(jd_agregar.getContentPane());
-        jd_agregar.getContentPane().setLayout(jd_agregarLayout);
-        jd_agregarLayout.setHorizontalGroup(
-            jd_agregarLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(jd_agregarLayout.createSequentialGroup()
-                .addGap(88, 88, 88)
-                .addGroup(jd_agregarLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(jLabel3)
-                    .addGroup(jd_agregarLayout.createSequentialGroup()
-                        .addComponent(jLabel2)
-                        .addGap(18, 18, 18)
-                        .addComponent(jComboBox1, javax.swing.GroupLayout.PREFERRED_SIZE, 179, javax.swing.GroupLayout.PREFERRED_SIZE)))
-                .addContainerGap(273, Short.MAX_VALUE))
-        );
-        jd_agregarLayout.setVerticalGroup(
-            jd_agregarLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(jd_agregarLayout.createSequentialGroup()
-                .addGap(91, 91, 91)
-                .addGroup(jd_agregarLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(jLabel2)
-                    .addComponent(jComboBox1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addGap(49, 49, 49)
-                .addComponent(jLabel3)
-                .addContainerGap(293, Short.MAX_VALUE))
-        );
+        lb_id.setFont(new java.awt.Font("Tahoma", 0, 14)); // NOI18N
+        lb_id.setText("ID");
+        jd_agregar.getContentPane().add(lb_id, new org.netbeans.lib.awtextra.AbsoluteConstraints(88, 198, -1, 27));
+
+        lb_rango.setFont(new java.awt.Font("Tahoma", 0, 14)); // NOI18N
+        lb_rango.setText("Rango");
+        jd_agregar.getContentPane().add(lb_rango, new org.netbeans.lib.awtextra.AbsoluteConstraints(88, 243, -1, 27));
+
+        lb_arma.setFont(new java.awt.Font("Tahoma", 0, 14)); // NOI18N
+        lb_arma.setText("Tipo de arma");
+        jd_agregar.getContentPane().add(lb_arma, new org.netbeans.lib.awtextra.AbsoluteConstraints(88, 381, -1, 27));
+        jd_agregar.getContentPane().add(tf_nombre, new org.netbeans.lib.awtextra.AbsoluteConstraints(210, 160, 179, -1));
+        jd_agregar.getContentPane().add(tf_id, new org.netbeans.lib.awtextra.AbsoluteConstraints(210, 203, 179, -1));
+        jd_agregar.getContentPane().add(tf_rango, new org.netbeans.lib.awtextra.AbsoluteConstraints(210, 248, 179, -1));
+
+        jButton1.setText("Guardar");
+        jButton1.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButton1ActionPerformed(evt);
+            }
+        });
+        jd_agregar.getContentPane().add(jButton1, new org.netbeans.lib.awtextra.AbsoluteConstraints(374, 457, 91, 36));
+
+        cb_arma.setModel(new DefaultComboBoxModel());
+        jd_agregar.getContentPane().add(cb_arma, new org.netbeans.lib.awtextra.AbsoluteConstraints(210, 386, 179, -1));
+
+        lb_edad.setFont(new java.awt.Font("Tahoma", 0, 14)); // NOI18N
+        lb_edad.setText("Edad");
+        jd_agregar.getContentPane().add(lb_edad, new org.netbeans.lib.awtextra.AbsoluteConstraints(88, 288, -1, 27));
+        jd_agregar.getContentPane().add(tf_edad, new org.netbeans.lib.awtextra.AbsoluteConstraints(210, 293, 179, -1));
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
 
         javax.swing.tree.DefaultMutableTreeNode treeNode1 = new javax.swing.tree.DefaultMutableTreeNode("Ejercito");
-        jTree1.setModel(new javax.swing.tree.DefaultTreeModel(treeNode1));
-        jScrollPane1.setViewportView(jTree1);
+        jt_arbol.setModel(new javax.swing.tree.DefaultTreeModel(treeNode1));
+        jt_arbol.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                jt_arbolMouseClicked(evt);
+            }
+        });
+        jScrollPane1.setViewportView(jt_arbol);
 
         jLabel1.setFont(new java.awt.Font("Tahoma", 0, 24)); // NOI18N
         jLabel1.setText("Soldados");
@@ -103,18 +171,18 @@ public class Ventana extends javax.swing.JFrame {
             .addGroup(layout.createSequentialGroup()
                 .addContainerGap()
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 531, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(jLabel1))
-                .addContainerGap(226, Short.MAX_VALUE))
+                    .addComponent(jLabel1)
+                    .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 531, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
-                .addGap(53, 53, 53)
+                .addGap(33, 33, 33)
                 .addComponent(jLabel1)
-                .addGap(18, 18, 18)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(98, Short.MAX_VALUE))
+                .addContainerGap(125, Short.MAX_VALUE))
         );
 
         pack();
@@ -123,8 +191,136 @@ public class Ventana extends javax.swing.JFrame {
     private void agregarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_agregarActionPerformed
         // TODO add your handling code here:
         
+        Arma AK47 = new Arma("AK-47", 27);
+        Arma revolver = new Arma("Revolver Navant", 27);
+        Arma rpg7 = new Arma("RPG-7", 57);
+        DefaultComboBoxModel modelo = (DefaultComboBoxModel) cb_arma.getModel();
+        modelo.removeAllElements();
+        modelo.addElement(AK47);
+        modelo.addElement(revolver);
+        modelo.addElement(rpg7);
         
+        
+        jd_agregar.setModal(true);
+        jd_agregar.pack();
+        jd_agregar.setLocationRelativeTo(this);
+        jd_agregar.setVisible(true);
+
+
     }//GEN-LAST:event_agregarActionPerformed
+
+    private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
+
+        if ((cb_soldado.getSelectedItem().toString()).equals("Ruso")) {
+            String nombre = tf_nombre.getText();
+            String rango = tf_rango.getText();
+            String ID = tf_id.getText();
+
+            int edad = Integer.parseInt(tf_edad.getText());
+            int resistencia = edad * 8;
+
+            Arma arma = (Arma) cb_arma.getSelectedItem();
+
+            Ruso ruso = new Ruso(nombre, ID, edad, resistencia, rango, arma);
+            soldados.add(ruso);
+
+        } else if ((cb_soldado.getSelectedItem().toString()).equals("Alumno de progra 2")) {
+            String apodo = tf_nombre.getText();
+            String GradoAcademico = tf_rango.getText();
+            int numeroCuenta = Integer.parseInt(tf_id.getText());
+
+            int edad = Integer.parseInt(tf_edad.getText());
+            int resistencia = edad * 8;
+
+            Arma arma = (Arma) cb_arma.getSelectedItem();
+
+            AlumnoProgra2 Alumno = new AlumnoProgra2(apodo, GradoAcademico, edad, numeroCuenta, resistencia, arma);
+            soldados.add(Alumno);
+        } else {
+            String alias = tf_nombre.getText();
+            String casta = tf_rango.getText();
+
+            int edad = Integer.parseInt(tf_edad.getText());
+            int resistencia = edad * 8;
+
+            Arma arma = (Arma) cb_arma.getSelectedItem();
+
+            Aleman aleman = new Aleman(alias, casta, edad, resistencia, arma);
+            soldados.add(aleman);
+
+        }
+        Cargar();
+
+    }//GEN-LAST:event_jButton1ActionPerformed
+
+    private void cb_soldadoItemStateChanged(java.awt.event.ItemEvent evt) {//GEN-FIRST:event_cb_soldadoItemStateChanged
+        try {
+            if ((cb_soldado.getSelectedItem().toString()).equals("Ruso")) {
+                Arma AK47 = new Arma("AK-47", 27);
+                Arma revolver = new Arma("Revolver Navant", 27);
+                Arma rpg7 = new Arma("RPG-7", 57);
+                DefaultComboBoxModel modelo = (DefaultComboBoxModel) cb_arma.getModel();
+                modelo.removeAllElements();
+                modelo.addElement(AK47);
+                modelo.addElement(revolver);
+                modelo.addElement(rpg7);
+
+                tf_id.setVisible(true);
+                lb_id.setVisible(true);
+                lb_nombre.setText("Nombre");
+                lb_id.setText("ID");
+                lb_rango.setText("Rango");
+
+            } else if ((cb_soldado.getSelectedItem().toString()).equals("Aleman")) {
+                Arma MG42 = new Arma("MG42", 32);
+                Arma pistola = new Arma("Pistolas Walther P38", 11);
+                Arma ametralladora = new Arma("Ametralladora MG42", 32);
+                DefaultComboBoxModel modelo = (DefaultComboBoxModel) cb_arma.getModel();
+                modelo.removeAllElements();
+                modelo.addElement(MG42);
+                modelo.addElement(pistola);
+                modelo.addElement(ametralladora);
+
+                lb_nombre.setText("Alias");
+                lb_id.setVisible(false);
+                tf_id.setVisible(false);
+                lb_rango.setText("Casta");
+
+            } else {
+                Arma disco = new Arma("Discos duros", 23);
+                Arma wii = new Arma("Controles de Wii ", 47);
+                Arma pc = new Arma(" Laptops", 76);
+                DefaultComboBoxModel modelo = (DefaultComboBoxModel) cb_arma.getModel();
+                modelo.removeAllElements();
+                modelo.addElement(disco);
+                modelo.addElement(wii);
+                modelo.addElement(pc);
+
+                lb_id.setVisible(true);
+                tf_id.setVisible(true);
+                lb_nombre.setText("Apodo");
+                lb_id.setText("Numero de cuenta");
+                lb_rango.setText("Grado academico");
+
+            }
+        } catch (Exception e) {
+        }
+
+
+    }//GEN-LAST:event_cb_soldadoItemStateChanged
+
+    private void eliminarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_eliminarActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_eliminarActionPerformed
+
+    private void jt_arbolMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jt_arbolMouseClicked
+        // TODO add your handling code here:
+        if (evt.isMetaDown()) {
+            menu_popup.show(evt.getComponent(), evt.getX(), evt.getY());
+
+        }
+
+    }//GEN-LAST:event_jt_arbolMouseClicked
 
     /**
      * @param args the command line arguments
@@ -163,15 +359,25 @@ public class Ventana extends javax.swing.JFrame {
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JMenuItem agregar;
+    private javax.swing.JComboBox<String> cb_arma;
+    private javax.swing.JComboBox<String> cb_soldado;
     private javax.swing.JMenuItem eliminar;
-    private javax.swing.JComboBox<String> jComboBox1;
+    private javax.swing.JButton jButton1;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel2;
-    private javax.swing.JLabel jLabel3;
     private javax.swing.JScrollPane jScrollPane1;
-    private javax.swing.JTree jTree1;
     private javax.swing.JDialog jd_agregar;
+    private javax.swing.JTree jt_arbol;
+    private javax.swing.JLabel lb_arma;
+    private javax.swing.JLabel lb_edad;
+    private javax.swing.JLabel lb_id;
+    private javax.swing.JLabel lb_nombre;
+    private javax.swing.JLabel lb_rango;
     private javax.swing.JPopupMenu menu_popup;
     private javax.swing.JMenuItem modificar;
+    private javax.swing.JTextField tf_edad;
+    private javax.swing.JTextField tf_id;
+    private javax.swing.JTextField tf_nombre;
+    private javax.swing.JTextField tf_rango;
     // End of variables declaration//GEN-END:variables
 }
