@@ -49,6 +49,7 @@ public class Aleman implements Serializable{
 
     public void setEdad(int Edad) {
         this.Edad = Edad;
+        setResistencia(Edad*8);
     }
 
     public int getResistencia() {

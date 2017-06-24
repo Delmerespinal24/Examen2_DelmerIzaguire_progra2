@@ -28,6 +28,7 @@ public class Ventana extends javax.swing.JFrame {
     private ArrayList soldados;
 
     public void Cargar() {
+
         DefaultTreeModel m = (DefaultTreeModel) jt_arbol.getModel();
         DefaultMutableTreeNode raiz = (DefaultMutableTreeNode) m.getRoot();
         raiz.removeAllChildren();
@@ -153,6 +154,8 @@ public class Ventana extends javax.swing.JFrame {
         jt_arbol = new javax.swing.JTree();
         jLabel1 = new javax.swing.JLabel();
         jButton2 = new javax.swing.JButton();
+        cargar = new javax.swing.JButton();
+        guardar_archivo = new javax.swing.JButton();
 
         agregar.setText("Agregar soldado");
         agregar.addActionListener(new java.awt.event.ActionListener() {
@@ -162,7 +165,12 @@ public class Ventana extends javax.swing.JFrame {
         });
         menu_popup.add(agregar);
 
-        modificar.setText("Modificar soldado");
+        modificar.setText("Editar soldado");
+        modificar.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                modificarActionPerformed(evt);
+            }
+        });
         menu_popup.add(modificar);
 
         eliminar.setText("Dar de alta este soldado");
@@ -244,10 +252,25 @@ public class Ventana extends javax.swing.JFrame {
         jLabel1.setFont(new java.awt.Font("Tahoma", 0, 24)); // NOI18N
         jLabel1.setText("Soldados");
 
+        jButton2.setBackground(new java.awt.Color(255, 0, 0));
         jButton2.setText("Simular batalla");
         jButton2.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 jButton2ActionPerformed(evt);
+            }
+        });
+
+        cargar.setText("Cargar");
+        cargar.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                cargarActionPerformed(evt);
+            }
+        });
+
+        guardar_archivo.setText("Guardar");
+        guardar_archivo.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                guardar_archivoActionPerformed(evt);
             }
         });
 
@@ -260,7 +283,12 @@ public class Ventana extends javax.swing.JFrame {
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addComponent(jLabel1)
                     .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 531, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(jButton2))
+                    .addGroup(layout.createSequentialGroup()
+                        .addComponent(jButton2)
+                        .addGap(18, 18, 18)
+                        .addComponent(guardar_archivo)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                        .addComponent(cargar)))
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
         layout.setVerticalGroup(
@@ -271,7 +299,10 @@ public class Ventana extends javax.swing.JFrame {
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(34, 34, 34)
-                .addComponent(jButton2, javax.swing.GroupLayout.PREFERRED_SIZE, 60, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(jButton2, javax.swing.GroupLayout.PREFERRED_SIZE, 60, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(guardar_archivo, javax.swing.GroupLayout.PREFERRED_SIZE, 60, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(cargar, javax.swing.GroupLayout.PREFERRED_SIZE, 60, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addContainerGap(31, Short.MAX_VALUE))
         );
 
@@ -415,10 +446,15 @@ public class Ventana extends javax.swing.JFrame {
 
     private void jt_arbolMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jt_arbolMouseClicked
         // TODO add your handling code here:
-        if (evt.isMetaDown()) {
-            menu_popup.show(evt.getComponent(), evt.getX(), evt.getY());
+        try {
+            if (evt.isMetaDown()) {
+                menu_popup.show(evt.getComponent(), evt.getX(), evt.getY());
 
+            }
+        } catch (Exception e) {
+            JOptionPane.showMessageDialog(this, "No se puede modificar ni eliminar aqui");
         }
+
 
     }//GEN-LAST:event_jt_arbolMouseClicked
 
@@ -563,6 +599,133 @@ public class Ventana extends javax.swing.JFrame {
         tf_edad.setText("");
     }//GEN-LAST:event_limpiarActionPerformed
 
+    private void cargarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_cargarActionPerformed
+        AdministrarSoldados as = new AdministrarSoldados(".\\SoldadosRemake.rmk");
+        as.CargarArchivo();
+        soldados = as.getListaSoldados();
+
+        Cargar();
+    }//GEN-LAST:event_cargarActionPerformed
+
+    private void guardar_archivoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_guardar_archivoActionPerformed
+        AdministrarSoldados as = new AdministrarSoldados(".\\SoldadosRemake.rmk");
+        as.setListaSoldados(soldados);
+        as.escribirArchivo();
+
+
+    }//GEN-LAST:event_guardar_archivoActionPerformed
+
+    private void modificarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_modificarActionPerformed
+        DefaultMutableTreeNode nodo_seleccionado = (DefaultMutableTreeNode) jt_arbol.getSelectionPath().getLastPathComponent();
+        Object Seleccion = nodo_seleccionado.getUserObject();
+        if (Seleccion instanceof Ruso) {
+            String mod = (String) JOptionPane.showInputDialog(null, "Que desea editar?",
+                    "MODIFICAR", JOptionPane.QUESTION_MESSAGE, null,
+                    new Object[]{"Nombre", "ID", "Edad", "Rango"}, "Nombre");
+            switch (mod) {
+                case "Nombre":
+                    for (Object sld : soldados) {
+                        if (sld.equals(Seleccion)) {
+                            ((Ruso) sld).setNombre(JOptionPane.showInputDialog(this, "Ingrese el nuevo nombre"));
+                        }
+                    }
+                    break;
+                case "ID":
+                   
+                    for (Object sld : soldados) {
+                        if (sld.equals(Seleccion)) {
+                            ((Ruso) sld).setID(JOptionPane.showInputDialog(this, "Ingrese el nuevo ID"));
+                        }
+                    }
+                    break;
+                case "Edad":
+                    for (Object sld : soldados) {
+                        if (sld.equals(Seleccion)) {
+                            ((Ruso) sld).setEdad(Integer.parseInt(JOptionPane.showInputDialog(this, "Ingrese la nueva edad")));
+                        }
+                    }
+                    break;
+                case "Rango":
+                    for (Object sld : soldados) {
+                        if (sld.equals(Seleccion)) {
+                            ((Ruso) sld).setRango(JOptionPane.showInputDialog(this, "Ingrese la nueva rango"));
+                        }
+                    }
+                    break;
+            }
+            Cargar();
+        } else if (Seleccion instanceof Aleman) {
+            String mod = (String) JOptionPane.showInputDialog(null, "Que desea editar?",
+                    "MODIFICAR", JOptionPane.QUESTION_MESSAGE, null,
+                    new Object[]{"Alias", "Casta", "Edad"}, "Nombre");
+            switch (mod) {
+                case "Alias":
+                    for (Object sld : soldados) {
+                        if (sld.equals(Seleccion)) {
+                            ((Aleman) sld).setAlias(JOptionPane.showInputDialog(this, "Ingrese el nuevo alias"));
+                        }
+                    }
+                    break;
+                case "Casta":
+                    for (Object sld : soldados) {
+                        if (sld.equals(Seleccion)) {
+                            ((Aleman) sld).setCasta(JOptionPane.showInputDialog(this, "Ingrese la nueva casta"));
+                        }
+                    }
+                    break;
+                case "Edad":
+                    for (Object sld : soldados) {
+                        if (sld.equals(Seleccion)) {
+                            ((Aleman) sld).setEdad(Integer.parseInt(JOptionPane.showInputDialog(this, "Ingrese la nueva edad")));
+                        }
+                    }
+                    break;
+
+            }
+            Cargar();
+        } else if (Seleccion instanceof AlumnoProgra2) {
+            String mod = (String) JOptionPane.showInputDialog(null, "Que desea editar?",
+                    "MODIFICAR", JOptionPane.QUESTION_MESSAGE, null,
+                    new Object[]{"Apodo", "Numero de cuenta", "Edad", "Grado academico"}, "Nombre");
+            switch (mod) {
+                case "Apodo":
+                    for (Object sld : soldados) {
+                        if (sld.equals(Seleccion)) {
+                            ((AlumnoProgra2) sld).setApodo(JOptionPane.showInputDialog(this, "Ingrese el nuevo apodo"));
+                        }
+                    }
+                    break;
+                case "Numero de cuenta":
+                    for (Object sld : soldados) {
+                        if (sld.equals(Seleccion)) {
+                            ((AlumnoProgra2) sld).setNumeroCuenta(Integer.parseInt(JOptionPane.showInputDialog(this, "Ingrese el nuevo numero de cuenta")));
+                        }
+                    }
+                    break;
+                case "Edad":
+                    for (Object sld : soldados) {
+                        if (sld.equals(Seleccion)) {
+                            ((AlumnoProgra2) sld).setEdad(Integer.parseInt(JOptionPane.showInputDialog(this, "Ingrese la nueva edad")));
+                        }
+                    }
+                    break;
+                case "Grado academico":
+                    for (Object sld : soldados) {
+                        if (sld.equals(Seleccion)) {
+                            ((AlumnoProgra2) sld).setGradoAcademico(JOptionPane.showInputDialog(this, "Ingrese el nuevo grado academico"));
+                        }
+                    }
+                    break;
+            }
+
+            Cargar();
+        } else {
+            JOptionPane.showMessageDialog(this, "Solo se pueden modificar los soldados y alumnos");
+        }
+
+
+    }//GEN-LAST:event_modificarActionPerformed
+
     /**
      * @param args the command line arguments
      */
@@ -600,10 +763,12 @@ public class Ventana extends javax.swing.JFrame {
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JMenuItem agregar;
+    private javax.swing.JButton cargar;
     private javax.swing.JComboBox<String> cb_arma;
     private javax.swing.JComboBox<String> cb_soldado;
     private javax.swing.JMenuItem eliminar;
     private javax.swing.JButton guardar;
+    private javax.swing.JButton guardar_archivo;
     private javax.swing.JButton jButton2;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel2;

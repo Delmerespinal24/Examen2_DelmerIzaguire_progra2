@@ -59,6 +59,7 @@ public class AlumnoProgra2 implements Serializable{
 
     public void setEdad(int Edad) {
         this.Edad = Edad;
+        setResistencia(Edad*8);
     }
 
     public int getNumeroCuenta() {

@@ -27,11 +27,14 @@ public class AdministrarSoldados implements Serializable{
         archivo = new File(path);
     }
 
-    //Extra mutador
-    
-    public void setPersona(Object p){
-        this.listaSoldados.add(p);
+    public ArrayList getListaSoldados() {
+        return listaSoldados;
     }
+
+    public void setListaSoldados(ArrayList listaSoldados) {
+        this.listaSoldados = listaSoldados;
+    }
+    
     
     public void CargarArchivo(){
         try {
