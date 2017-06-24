@@ -5,11 +5,14 @@
  */
 package examen2_delmerizaguirre_progra2;
 
+import java.io.Serializable;
+
 /**
  *
  * @author Owner
  */
-public class Ruso extends Soldado{
+public class Ruso implements Serializable{
+    
     private String Nombre;
     private String ID;
     private int Edad;
@@ -83,7 +86,7 @@ public class Ruso extends Soldado{
 
     @Override
     public String toString() {
-        return "Ruso{" + '}';
+        return Nombre;
     }
 
     

@@ -7,6 +7,7 @@ package examen2_delmerizaguirre_progra2;
 
 import java.util.ArrayList;
 import javax.swing.DefaultComboBoxModel;
+import javax.swing.JOptionPane;
 import javax.swing.tree.DefaultMutableTreeNode;
 import javax.swing.tree.DefaultTreeModel;
 
@@ -20,33 +21,102 @@ public class Ventana extends javax.swing.JFrame {
      * Creates new form Ventana
      */
     public Ventana() {
+        this.soldados = new ArrayList();
         initComponents();
     }
 
-    private ArrayList<Soldado> soldados = new ArrayList();
+    private ArrayList soldados;
 
     public void Cargar() {
         DefaultTreeModel m = (DefaultTreeModel) jt_arbol.getModel();
+        DefaultMutableTreeNode raiz = (DefaultMutableTreeNode) m.getRoot();
+        raiz.removeAllChildren();
         DefaultMutableTreeNode rusos = new DefaultMutableTreeNode("Soldados Rusos");
         DefaultMutableTreeNode alemanes = new DefaultMutableTreeNode("Soldados Alemanes");
         DefaultMutableTreeNode alumno = new DefaultMutableTreeNode("Alumnos de programacion II");
-        for (Soldado sld : soldados) {
+        for (Object sld : soldados) {
             if (sld instanceof Ruso) {
+                DefaultMutableTreeNode nombre = new DefaultMutableTreeNode("Nombre");
+                DefaultMutableTreeNode id = new DefaultMutableTreeNode("ID");
+                DefaultMutableTreeNode rango = new DefaultMutableTreeNode("Rango");
+                DefaultMutableTreeNode edad = new DefaultMutableTreeNode("Edad");
+                DefaultMutableTreeNode resistencia = new DefaultMutableTreeNode("Resistencia");
+                DefaultMutableTreeNode arma = new DefaultMutableTreeNode("Arma");
+
+                nombre.add(new DefaultMutableTreeNode(((Ruso) sld).getNombre()));
+                id.add(new DefaultMutableTreeNode(((Ruso) sld).getID()));
+                rango.add(new DefaultMutableTreeNode(((Ruso) sld).getRango()));
+                edad.add(new DefaultMutableTreeNode(((Ruso) sld).getEdad()));
+                resistencia.add(new DefaultMutableTreeNode(((Ruso) sld).getResistencia()));
+                arma.add(new DefaultMutableTreeNode(((Ruso) sld).getArma()));
+
                 DefaultMutableTreeNode soldado = new DefaultMutableTreeNode(sld);
-                
+
+                soldado.add(nombre);
+                soldado.add(id);
+                soldado.add(rango);
+                soldado.add(edad);
+                soldado.add(resistencia);
+                soldado.add(arma);
+
                 rusos.add(soldado);
 
             } else if (sld instanceof Aleman) {
+                DefaultMutableTreeNode alias = new DefaultMutableTreeNode("Alias");
+                DefaultMutableTreeNode casta = new DefaultMutableTreeNode("Casta");
+                DefaultMutableTreeNode edad = new DefaultMutableTreeNode("Edad");
+                DefaultMutableTreeNode resistencia = new DefaultMutableTreeNode("Resistencia");
+                DefaultMutableTreeNode arma = new DefaultMutableTreeNode("Arma");
+
+                alias.add(new DefaultMutableTreeNode(((Aleman) sld).getAlias()));
+                casta.add(new DefaultMutableTreeNode(((Aleman) sld).getCasta()));
+                edad.add(new DefaultMutableTreeNode(((Aleman) sld).getEdad()));
+                resistencia.add(new DefaultMutableTreeNode(((Aleman) sld).getResistencia()));
+                arma.add(new DefaultMutableTreeNode(((Aleman) sld).getArma()));
+
                 DefaultMutableTreeNode soldado = new DefaultMutableTreeNode(sld);
+
+                soldado.add(alias);
+                soldado.add(casta);
+                soldado.add(edad);
+                soldado.add(resistencia);
+                soldado.add(arma);
+
                 alemanes.add(soldado);
 
             } else {
+                DefaultMutableTreeNode apodo = new DefaultMutableTreeNode("Apodo");
+                DefaultMutableTreeNode numerocuenta = new DefaultMutableTreeNode("Numero de Cuenta");
+                DefaultMutableTreeNode GradoA = new DefaultMutableTreeNode("Grado Academico");
+                DefaultMutableTreeNode edad = new DefaultMutableTreeNode("Edad");
+                DefaultMutableTreeNode resistencia = new DefaultMutableTreeNode("Resistencia");
+                DefaultMutableTreeNode arma = new DefaultMutableTreeNode("Arma");
+
+                apodo.add(new DefaultMutableTreeNode(((AlumnoProgra2) sld).getApodo()));
+                numerocuenta.add(new DefaultMutableTreeNode(((AlumnoProgra2) sld).getNumeroCuenta()));
+                GradoA.add(new DefaultMutableTreeNode(((AlumnoProgra2) sld).getResistencia()));
+                edad.add(new DefaultMutableTreeNode(((AlumnoProgra2) sld).getEdad()));
+                resistencia.add(new DefaultMutableTreeNode(((AlumnoProgra2) sld).getResistencia()));
+                arma.add(new DefaultMutableTreeNode(((AlumnoProgra2) sld).getArma()));
+
                 DefaultMutableTreeNode soldado = new DefaultMutableTreeNode(sld);
+
+                soldado.add(apodo);
+                soldado.add(numerocuenta);
+                soldado.add(GradoA);
+                soldado.add(edad);
+                soldado.add(resistencia);
+                soldado.add(arma);
+
                 alumno.add(soldado);
 
             }
 
         }
+        raiz.add(rusos);
+        raiz.add(alumno);
+        raiz.add(alemanes);
+
         m.reload();
 
     }
@@ -74,13 +144,15 @@ public class Ventana extends javax.swing.JFrame {
         tf_nombre = new javax.swing.JTextField();
         tf_id = new javax.swing.JTextField();
         tf_rango = new javax.swing.JTextField();
-        jButton1 = new javax.swing.JButton();
+        guardar = new javax.swing.JButton();
         cb_arma = new javax.swing.JComboBox<>();
         lb_edad = new javax.swing.JLabel();
         tf_edad = new javax.swing.JTextField();
+        limpiar = new javax.swing.JButton();
         jScrollPane1 = new javax.swing.JScrollPane();
         jt_arbol = new javax.swing.JTree();
         jLabel1 = new javax.swing.JLabel();
+        jButton2 = new javax.swing.JButton();
 
         agregar.setText("Agregar soldado");
         agregar.addActionListener(new java.awt.event.ActionListener() {
@@ -93,7 +165,7 @@ public class Ventana extends javax.swing.JFrame {
         modificar.setText("Modificar soldado");
         menu_popup.add(modificar);
 
-        eliminar.setText("Eliminar soldado");
+        eliminar.setText("Dar de alta este soldado");
         eliminar.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 eliminarActionPerformed(evt);
@@ -134,13 +206,13 @@ public class Ventana extends javax.swing.JFrame {
         jd_agregar.getContentPane().add(tf_id, new org.netbeans.lib.awtextra.AbsoluteConstraints(210, 203, 179, -1));
         jd_agregar.getContentPane().add(tf_rango, new org.netbeans.lib.awtextra.AbsoluteConstraints(210, 248, 179, -1));
 
-        jButton1.setText("Guardar");
-        jButton1.addActionListener(new java.awt.event.ActionListener() {
+        guardar.setText("Guardar");
+        guardar.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jButton1ActionPerformed(evt);
+                guardarActionPerformed(evt);
             }
         });
-        jd_agregar.getContentPane().add(jButton1, new org.netbeans.lib.awtextra.AbsoluteConstraints(374, 457, 91, 36));
+        jd_agregar.getContentPane().add(guardar, new org.netbeans.lib.awtextra.AbsoluteConstraints(340, 440, 91, 36));
 
         cb_arma.setModel(new DefaultComboBoxModel());
         jd_agregar.getContentPane().add(cb_arma, new org.netbeans.lib.awtextra.AbsoluteConstraints(210, 386, 179, -1));
@@ -149,6 +221,14 @@ public class Ventana extends javax.swing.JFrame {
         lb_edad.setText("Edad");
         jd_agregar.getContentPane().add(lb_edad, new org.netbeans.lib.awtextra.AbsoluteConstraints(88, 288, -1, 27));
         jd_agregar.getContentPane().add(tf_edad, new org.netbeans.lib.awtextra.AbsoluteConstraints(210, 293, 179, -1));
+
+        limpiar.setText("Limpiar");
+        limpiar.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                limpiarActionPerformed(evt);
+            }
+        });
+        jd_agregar.getContentPane().add(limpiar, new org.netbeans.lib.awtextra.AbsoluteConstraints(240, 440, 91, 36));
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
 
@@ -164,6 +244,13 @@ public class Ventana extends javax.swing.JFrame {
         jLabel1.setFont(new java.awt.Font("Tahoma", 0, 24)); // NOI18N
         jLabel1.setText("Soldados");
 
+        jButton2.setText("Simular batalla");
+        jButton2.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButton2ActionPerformed(evt);
+            }
+        });
+
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
@@ -172,7 +259,8 @@ public class Ventana extends javax.swing.JFrame {
                 .addContainerGap()
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addComponent(jLabel1)
-                    .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 531, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 531, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(jButton2))
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
         layout.setVerticalGroup(
@@ -182,7 +270,9 @@ public class Ventana extends javax.swing.JFrame {
                 .addComponent(jLabel1)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(125, Short.MAX_VALUE))
+                .addGap(34, 34, 34)
+                .addComponent(jButton2, javax.swing.GroupLayout.PREFERRED_SIZE, 60, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addContainerGap(31, Short.MAX_VALUE))
         );
 
         pack();
@@ -190,17 +280,9 @@ public class Ventana extends javax.swing.JFrame {
 
     private void agregarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_agregarActionPerformed
         // TODO add your handling code here:
-        
-        Arma AK47 = new Arma("AK-47", 27);
-        Arma revolver = new Arma("Revolver Navant", 27);
-        Arma rpg7 = new Arma("RPG-7", 57);
-        DefaultComboBoxModel modelo = (DefaultComboBoxModel) cb_arma.getModel();
-        modelo.removeAllElements();
-        modelo.addElement(AK47);
-        modelo.addElement(revolver);
-        modelo.addElement(rpg7);
-        
-        
+
+        ComprobarArmas();
+
         jd_agregar.setModal(true);
         jd_agregar.pack();
         jd_agregar.setLocationRelativeTo(this);
@@ -209,51 +291,61 @@ public class Ventana extends javax.swing.JFrame {
 
     }//GEN-LAST:event_agregarActionPerformed
 
-    private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
+    private void guardarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_guardarActionPerformed
+        try {
+            if ((cb_soldado.getSelectedItem().toString()).equals("Ruso")) {
+                String nombre = tf_nombre.getText();
+                String rango = tf_rango.getText();
+                String ID = tf_id.getText();
 
-        if ((cb_soldado.getSelectedItem().toString()).equals("Ruso")) {
-            String nombre = tf_nombre.getText();
-            String rango = tf_rango.getText();
-            String ID = tf_id.getText();
+                int edad = Integer.parseInt(tf_edad.getText());
+                int resistencia = edad * 8;
 
-            int edad = Integer.parseInt(tf_edad.getText());
-            int resistencia = edad * 8;
+                Arma arma = (Arma) cb_arma.getSelectedItem();
 
-            Arma arma = (Arma) cb_arma.getSelectedItem();
+                Ruso ruso = new Ruso(nombre, ID, edad, resistencia, rango, arma);
+                soldados.add(ruso);
 
-            Ruso ruso = new Ruso(nombre, ID, edad, resistencia, rango, arma);
-            soldados.add(ruso);
+            } else if ((cb_soldado.getSelectedItem().toString()).equals("Alumno de progra 2")) {
+                String apodo = tf_nombre.getText();
+                String GradoAcademico = tf_rango.getText();
+                int numeroCuenta = Integer.parseInt(tf_id.getText());
 
-        } else if ((cb_soldado.getSelectedItem().toString()).equals("Alumno de progra 2")) {
-            String apodo = tf_nombre.getText();
-            String GradoAcademico = tf_rango.getText();
-            int numeroCuenta = Integer.parseInt(tf_id.getText());
+                int edad = Integer.parseInt(tf_edad.getText());
+                int resistencia = edad * 8;
 
-            int edad = Integer.parseInt(tf_edad.getText());
-            int resistencia = edad * 8;
+                Arma arma = (Arma) cb_arma.getSelectedItem();
 
-            Arma arma = (Arma) cb_arma.getSelectedItem();
+                AlumnoProgra2 Alumno = new AlumnoProgra2(apodo, GradoAcademico, edad, numeroCuenta, resistencia, arma);
+                soldados.add(Alumno);
+            } else {
+                String alias = tf_nombre.getText();
+                String casta = tf_rango.getText();
 
-            AlumnoProgra2 Alumno = new AlumnoProgra2(apodo, GradoAcademico, edad, numeroCuenta, resistencia, arma);
-            soldados.add(Alumno);
-        } else {
-            String alias = tf_nombre.getText();
-            String casta = tf_rango.getText();
+                int edad = Integer.parseInt(tf_edad.getText());
+                int resistencia = edad * 8;
 
-            int edad = Integer.parseInt(tf_edad.getText());
-            int resistencia = edad * 8;
+                Arma arma = (Arma) cb_arma.getSelectedItem();
 
-            Arma arma = (Arma) cb_arma.getSelectedItem();
+                Aleman aleman = new Aleman(alias, casta, edad, resistencia, arma);
+                soldados.add(aleman);
 
-            Aleman aleman = new Aleman(alias, casta, edad, resistencia, arma);
-            soldados.add(aleman);
-
+            }
+        } catch (Exception e) {
+            JOptionPane.showMessageDialog(jd_agregar, "Ha ocurrido un problema");
+            System.out.println(e.getClass());
         }
+
         Cargar();
 
-    }//GEN-LAST:event_jButton1ActionPerformed
+    }//GEN-LAST:event_guardarActionPerformed
 
     private void cb_soldadoItemStateChanged(java.awt.event.ItemEvent evt) {//GEN-FIRST:event_cb_soldadoItemStateChanged
+        ComprobarArmas();
+
+    }//GEN-LAST:event_cb_soldadoItemStateChanged
+
+    private void ComprobarArmas() {
         try {
             if ((cb_soldado.getSelectedItem().toString()).equals("Ruso")) {
                 Arma AK47 = new Arma("AK-47", 27);
@@ -305,12 +397,20 @@ public class Ventana extends javax.swing.JFrame {
             }
         } catch (Exception e) {
         }
+    }
 
-
-    }//GEN-LAST:event_cb_soldadoItemStateChanged
 
     private void eliminarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_eliminarActionPerformed
-        // TODO add your handling code here:
+
+        DefaultMutableTreeNode nodo_seleccionado = (DefaultMutableTreeNode) jt_arbol.getSelectionPath().getLastPathComponent();
+        Object Soldado = nodo_seleccionado.getUserObject();
+        if (Soldado instanceof Ruso || Soldado instanceof Aleman || Soldado instanceof AlumnoProgra2) {
+            JOptionPane.showMessageDialog(this, "Soldado dado de alta");
+        } else {
+            JOptionPane.showMessageDialog(this, "No ha seleccionado un soldado");
+        }
+        soldados.remove(Soldado);
+        Cargar();
     }//GEN-LAST:event_eliminarActionPerformed
 
     private void jt_arbolMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jt_arbolMouseClicked
@@ -321,6 +421,147 @@ public class Ventana extends javax.swing.JFrame {
         }
 
     }//GEN-LAST:event_jt_arbolMouseClicked
+
+    private void jButton2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton2ActionPerformed
+        ArrayList<Ruso> rusos = new ArrayList();
+        ArrayList<Aleman> alemanes = new ArrayList();
+        ArrayList<AlumnoProgra2> alumnos = new ArrayList();
+        for (Object soldado : soldados) {
+            if (soldado instanceof Ruso) {
+                if (((Ruso) soldado).getResistencia() > 0) {
+                    rusos.add((Ruso) soldado);
+                }
+
+            } else if (soldado instanceof Aleman) {
+                if (((Aleman) soldado).getResistencia() > 0) {
+                    alemanes.add((Aleman) soldado);
+                }
+
+            } else {
+                if (((AlumnoProgra2) soldado).getResistencia() > 0) {
+                    alumnos.add((AlumnoProgra2) soldado);
+                }
+
+            }
+
+        }
+
+        while (!(alemanes.isEmpty() && alumnos.isEmpty()) && !(rusos.isEmpty() && alumnos.isEmpty()) && !(alemanes.isEmpty() && rusos.isEmpty())) {
+
+            //Ataque de los rusos
+            for (int i = 0; i < rusos.size(); i++) {
+                if (!alemanes.isEmpty()) {
+                    try {
+                        alemanes.get(i).setResistencia(alemanes.get(i).getResistencia() - rusos.get(i).getArma().getPoderFuego());
+                        if (alemanes.get(i).getResistencia() <= 0) {
+                            alemanes.remove(i);
+                        }
+                    } catch (IndexOutOfBoundsException e) {
+                        alemanes.get(alemanes.size() - 1).setResistencia(alemanes.get(alemanes.size() - 1).getResistencia() - rusos.get(i).getArma().getPoderFuego());
+                        if (alemanes.get(alemanes.size() - 1).getResistencia() <= 0) {
+                            alemanes.remove(alemanes.size() - 1);
+                        }
+                    }
+                }
+                if (!alumnos.isEmpty()) {
+                    try {
+                        alumnos.get(i).setResistencia(alumnos.get(i).getResistencia() - rusos.get(i).getArma().getPoderFuego());
+                        if (alumnos.get(i).getResistencia() <= 0) {
+                            alumnos.remove(i);
+                        }
+                    } catch (IndexOutOfBoundsException e) {
+                        alumnos.get(alumnos.size() - 1).setResistencia(alumnos.get(alumnos.size() - 1).getResistencia() - rusos.get(i).getArma().getPoderFuego());
+                        if (alumnos.get(alumnos.size() - 1).getResistencia() <= 0) {
+                            alumnos.remove(alumnos.size() - 1);
+                        }
+                    }
+                }
+
+            }
+            //turno de los alemanes
+            for (int i = 0; i < alemanes.size(); i++) {
+                if (!rusos.isEmpty()) {
+                    try {
+                        rusos.get(i).setResistencia(rusos.get(i).getResistencia() - alemanes.get(i).getArma().getPoderFuego());
+                        if (rusos.get(i).getResistencia() <= 0) {
+                            rusos.remove(i);
+                        }
+                    } catch (IndexOutOfBoundsException e) {
+                        rusos.get(rusos.size() - 1).setResistencia(rusos.get(rusos.size() - 1).getResistencia() - alemanes.get(i).getArma().getPoderFuego());
+                        if (rusos.get(rusos.size() - 1).getResistencia() <= 0) {
+                            rusos.remove(rusos.size() - 1);
+                        }
+                    }
+                }
+                if (!alumnos.isEmpty()) {
+                    try {
+                        alumnos.get(i).setResistencia(alumnos.get(i).getResistencia() - alemanes.get(i).getArma().getPoderFuego());
+                        if (alumnos.get(i).getResistencia() <= 0) {
+                            alumnos.remove(i);
+                        }
+                    } catch (IndexOutOfBoundsException e) {
+                        alumnos.get(alumnos.size() - 1).setResistencia(alumnos.get(alumnos.size() - 1).getResistencia() - alemanes.get(i).getArma().getPoderFuego());
+                        if (alumnos.get(alumnos.size() - 1).getResistencia() <= 0) {
+                            alumnos.remove(alumnos.size() - 1);
+                        }
+                    }
+                }
+
+            }
+            //Turno de los Alumnos
+            for (int i = 0; i < alumnos.size(); i++) {
+                if (!rusos.isEmpty()) {
+                    try {
+                        rusos.get(i).setResistencia(rusos.get(i).getResistencia() - alumnos.get(i).getArma().getPoderFuego());
+                        if (rusos.get(i).getResistencia() <= 0) {
+                            rusos.remove(i);
+                        }
+                    } catch (IndexOutOfBoundsException e) {
+                        rusos.get(rusos.size() - 1).setResistencia(rusos.get(rusos.size() - 1).getResistencia() - alumnos.get(i).getArma().getPoderFuego());
+                        if (rusos.get(rusos.size() - 1).getResistencia() <= 0) {
+                            rusos.remove(rusos.size() - 1);
+                        }
+                    }
+                }
+                if (!alemanes.isEmpty()) {
+                    try {
+                        alemanes.get(i).setResistencia(alemanes.get(i).getResistencia() - alumnos.get(i).getArma().getPoderFuego());
+                        if (alemanes.get(i).getResistencia() <= 0) {
+                            alemanes.remove(i);
+                        }
+                    } catch (IndexOutOfBoundsException e) {
+                        alemanes.get(alemanes.size() - 1).setResistencia(alemanes.get(alemanes.size() - 1).getResistencia() - alumnos.get(i).getArma().getPoderFuego());
+                        if (alemanes.get(alemanes.size() - 1).getResistencia() <= 0) {
+                            alemanes.remove(alemanes.size() - 1);
+                        }
+                    }
+                }
+
+            }
+            //System.out.println(alumnos.size() + "alumnos");
+            //System.out.println(alemanes.size() + "alemanes");
+            //System.out.println(rusos.size() + "rusos");
+
+        }
+        if (!alumnos.isEmpty()) {
+            JOptionPane.showMessageDialog(this, "Los alumnos ganaron! \n Alumnos restantes: " + alumnos.size());
+        }
+        if (!rusos.isEmpty()) {
+            JOptionPane.showMessageDialog(this, "Los rusos ganaron! \n Soldados restantes: " + rusos.size());
+        }
+        if (!alemanes.isEmpty()) {
+            JOptionPane.showMessageDialog(this, "Los alemanes ganaron! \n Soldados restantes: " + alemanes.size());
+        }
+        Cargar();
+
+    }//GEN-LAST:event_jButton2ActionPerformed
+
+    private void limpiarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_limpiarActionPerformed
+        tf_nombre.setText("");
+        tf_id.setText("");
+        tf_rango.setText("");
+        tf_edad.setText("");
+    }//GEN-LAST:event_limpiarActionPerformed
 
     /**
      * @param args the command line arguments
@@ -362,7 +603,8 @@ public class Ventana extends javax.swing.JFrame {
     private javax.swing.JComboBox<String> cb_arma;
     private javax.swing.JComboBox<String> cb_soldado;
     private javax.swing.JMenuItem eliminar;
-    private javax.swing.JButton jButton1;
+    private javax.swing.JButton guardar;
+    private javax.swing.JButton jButton2;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel2;
     private javax.swing.JScrollPane jScrollPane1;
@@ -373,6 +615,7 @@ public class Ventana extends javax.swing.JFrame {
     private javax.swing.JLabel lb_id;
     private javax.swing.JLabel lb_nombre;
     private javax.swing.JLabel lb_rango;
+    private javax.swing.JButton limpiar;
     private javax.swing.JPopupMenu menu_popup;
     private javax.swing.JMenuItem modificar;
     private javax.swing.JTextField tf_edad;

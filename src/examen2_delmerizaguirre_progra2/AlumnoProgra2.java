@@ -5,11 +5,14 @@
  */
 package examen2_delmerizaguirre_progra2;
 
+import java.io.Serializable;
+
 /**
  *
  * @author Owner
  */
-public class AlumnoProgra2 extends Soldado{
+public class AlumnoProgra2 implements Serializable{
+    
     private String Apodo;
     private String GradoAcademico;
     private int Edad;

@@ -1,11 +1,13 @@
 
 package examen2_delmerizaguirre_progra2;
 
+import java.io.Serializable;
+
 /**
  *
  * @author Owner
  */
-public class Aleman extends Soldado{
+public class Aleman implements Serializable{
     private String alias;
     private String casta;
     private int Edad;

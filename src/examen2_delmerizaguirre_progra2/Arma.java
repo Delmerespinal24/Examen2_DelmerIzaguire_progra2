@@ -5,11 +5,13 @@
  */
 package examen2_delmerizaguirre_progra2;
 
+import java.io.Serializable;
+
 /**
  *
  * @author Owner
  */
-public class Arma {
+public class Arma implements Serializable {
     String nombre;
     int PoderFuego;
 
